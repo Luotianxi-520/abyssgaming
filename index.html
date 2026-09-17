@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ABYSSGAMING — MOUSEPADS</title>
+<!-- 内联 SVG 图标：免去一次 /favicon.ico 请求，也省一个文件 -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23b0152a'/%3E%3Ccircle cx='16' cy='12.5' r='5.2' fill='%23f2efe9'/%3E%3Cpath d='M3.5 22.5c3.2-2.8 5.3-2.8 8.5 0s5.3 2.8 8.5 0 5.3-2.8 8.5 0' fill='none' stroke='%23f2efe9' stroke-width='2.1' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
   /* ---------- 本地自托管字体：不依赖任何外部网络 ---------- */
   /* Anton —— 标题与 logo。SIL OFL 1.1，许可见 fonts/LICENSE-Anton.txt */
@@ -170,6 +172,66 @@
 
   .fade{animation:fade .5s ease both}
   @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ==================== 手机竖屏（< 600px）====================
+     桌面端是「固定 1440×900 画布等比缩放」，那套只对横向视口成立：
+     手机长宽比从 16:9 到 21:9 跨度极大，按宽度缩放会让字变成蚂蚁，
+     按高度缩放则横向溢出。所以竖屏改用真实的流式布局，不做缩放。 */
+  @media (max-width:599px){
+    html,body{overflow-y:auto}
+
+    #canvas{
+      position:relative;left:auto;top:auto;transform:none;
+      width:100%;height:100vh;height:100dvh;
+      display:flex;flex-direction:column;
+      padding:16px 18px 12px;
+    }
+
+    .logo{position:static;left:auto;top:auto;font-size:22px}
+    .crumb{position:static;left:auto;top:auto;font-size:15px;margin-top:10px;gap:7px}
+
+    /* 导航改为浮层下拉，不占文档流 */
+    .nav{
+      position:absolute;left:18px;top:76px;z-index:40;
+      min-width:176px;padding:6px 14px 10px;
+      background:#fff;border-radius:10px;
+      box-shadow:0 14px 36px -12px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.06);
+    }
+    .nav button{font-size:13px;line-height:34px;height:34px}
+
+    /* 只留主垫，居中展示 */
+    .pad--back,.pad--right{display:none}
+    .scene{
+      position:relative;flex:1 1 auto;min-height:266px;overflow:visible;
+      perspective:900px;perspective-origin:50% 46%;
+    }
+    .pad--main{
+      left:50%;top:50%;width:74vw;height:63.4vw;
+      --dx:300px;--dy:-270px;--d:0ms;
+      transform:translate(-50%,-50%) translate(var(--dx),var(--dy))
+                rotateX(34deg) rotateZ(-13deg) scale(var(--s0));
+    }
+    .scene.ready .pad--main{
+      transform:translate(-50%,-50%) rotateX(34deg) rotateZ(-13deg) scale(1);
+    }
+
+    .info{position:static;left:auto;top:auto;width:auto;margin-top:14px}
+    .title{font-size:34px;line-height:.95}
+
+    /* 4 列在手机上太挤，改 2×2 */
+    .specs{display:grid;grid-template-columns:1fr 1fr;gap:15px 10px;margin-top:20px}
+    .spec{flex:none}
+    .spec .ic{height:16px;margin-bottom:8px}
+    .spec .lbl{font-size:9px;letter-spacing:.4px}
+    .spec .val{font-size:9.5px;margin-top:4px}
+
+    .desc{font-size:12px;line-height:1.62;margin-top:16px}
+    .actions{margin-top:18px}
+    .pill{font-size:9px;padding:10px 16px}
+
+    .pager{position:static;left:auto;bottom:auto;transform:none;
+           margin-top:14px;gap:30px;justify-content:center}
+  }
 </style>
 </head>
 <body>
@@ -363,11 +425,12 @@ function render(i, animate) {
 
   $('title').textContent = p.name;
 
-  // 标题自适应：默认 64px，名字过长时按比例缩到刚好填满信息栏，避免溢出
+  // 标题自适应：基准字号交给 CSS（各断点不同），过长时按比例缩到刚好填满
   const t = $('title');
-  t.style.fontSize = '64px';
+  t.style.fontSize = '';
+  const base = parseFloat(getComputedStyle(t).fontSize);
   if (t.scrollWidth > t.parentElement.clientWidth) {
-    t.style.fontSize = (64 * t.parentElement.clientWidth / t.scrollWidth).toFixed(2) + 'px';
+    t.style.fontSize = (base * t.parentElement.clientWidth / t.scrollWidth).toFixed(2) + 'px';
   }
 
   $('desc').textContent  = p.desc;
@@ -405,12 +468,21 @@ $('nav').onclick = (e) => {
 
 /* MOUSEPADS ⌄ 开合产品列表 */
 const crumb = document.querySelector('.crumb');
-crumb.setAttribute('aria-expanded', 'true');
 crumb.onclick = () => {
   const isOpen = crumb.getAttribute('aria-expanded') === 'true';
   crumb.setAttribute('aria-expanded', String(!isOpen));
   $('nav').classList.toggle('is-closed', isOpen);
 };
+
+/* 窄屏默认收起（浮层下拉），宽屏默认展开（常驻列表） */
+const mqPhone = matchMedia('(max-width:599px)');
+function syncNavDefault() {
+  const open = !mqPhone.matches;
+  crumb.setAttribute('aria-expanded', String(open));
+  $('nav').classList.toggle('is-closed', !open);
+}
+mqPhone.addEventListener('change', syncNavDefault);
+syncNavDefault();
 addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') step(-1);
   if (e.key === 'ArrowRight') step(1);
