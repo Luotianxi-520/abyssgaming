@@ -4,10 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ABYSSGAMING — MOUSEPADS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* ---------- 本地自托管字体：不依赖任何外部网络 ---------- */
+  /* Anton —— 标题与 logo。SIL OFL 1.1，许可见 fonts/LICENSE-Anton.txt */
+  @font-face{
+    font-family:'Anton';font-style:normal;font-display:swap;font-weight:400;
+    src:url('./fonts/anton-latin-400-normal.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+  }
+  /* Inter 可变字体 —— 正文，单文件覆盖 100~900 全部字重。
+     SIL OFL 1.1，许可见 fonts/LICENSE-Inter.txt */
+  @font-face{
+    font-family:'Inter';font-style:normal;font-display:swap;font-weight:100 900;
+    src:url('./fonts/inter-latin-wght-normal.woff2') format('woff2-variations'),
+        url('./fonts/inter-latin-wght-normal.woff2') format('woff2');
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+  }
+
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;overflow:hidden}
   body{
@@ -176,7 +189,7 @@
   </div>
 
   <aside class="info">
-    <h1 class="title display" id="title">OROCHI</h1>
+    <h1 class="title display" id="title">LEVIATHAN</h1>
     <div class="specs" id="specs"></div>
     <p class="desc" id="desc"></p>
     <div class="actions">
@@ -248,40 +261,40 @@ function padSVG(p) {
 
 /* ================= 产品数据 ================= */
 const PRODUCTS = [
-  { name:'OROCHI', base:'#b0152a', ink:'#141414', inkOpacity:.90,
+  { name:'LEVIATHAN', base:'#b0152a', ink:'#141414', inkOpacity:.90,
     sunFill:'#f2efe9', sunR:74, sunX:596, sunY:276, seed:1.3,
     waveCount:16, waveAmp:19, y0:.44, y1:.97,
-    size:'490 × 420 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'SLIMFLEX®',
-    desc:'Smooth woven cloth with a satin sheen, balanced glide and consistent stopping.' },
+    size:'490 × 420 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'DEEPGRIP',
+    desc:'A dense control weave with a matte finish. Even, unhurried glide that stops exactly where you lift.' },
 
-  { name:'SHANGUI', base:'#efece5', ink:'#15151a', inkOpacity:.82,
+  { name:'HADAL', base:'#efece5', ink:'#15151a', inkOpacity:.82,
     sunFill:'#c8202f', sunR:62, sunX:664, sunY:250, seed:2.7,
     waveCount:18, waveAmp:16, y0:.40, y1:.98,
-    size:'480 × 400 MM', thick:'3 MM', surface:'SPEED CLOTH', basem:'SLIMFLEX®',
+    size:'480 × 400 MM', thick:'3 MM', surface:'SPEED CLOTH', basem:'DEEPGRIP',
     desc:'Tightly woven surface tuned for long, uninterrupted swipes and low initial friction.' },
 
-  { name:'ECLIPSE / NAVY', base:'#152c56', ink:'#eef1f6', inkOpacity:.74,
+  { name:'TRENCH / NAVY', base:'#152c56', ink:'#eef1f6', inkOpacity:.74,
     sunFill:'#f6f4ef', sunR:68, sunX:520, sunY:268, seed:3.1,
     waveCount:14, waveAmp:22, y0:.46, y1:.97,
-    size:'900 × 400 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'SLIMFLEX®',
+    size:'900 × 400 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'DEEPGRIP',
     desc:'A full-desk format with the same weave — wide enough for low-sensitivity play.' },
 
-  { name:'ECLIPSE / PURPLE', base:'#4a2a68', ink:'#f0ecf7', inkOpacity:.72,
+  { name:'TRENCH / VIOLET', base:'#4a2a68', ink:'#f0ecf7', inkOpacity:.72,
     sunFill:'#f7f5f0', sunR:64, sunX:548, sunY:272, seed:4.4,
     waveCount:17, waveAmp:18, y0:.44, y1:.96,
-    size:'900 × 400 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'SLIMFLEX®',
+    size:'900 × 400 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'DEEPGRIP',
     desc:'Deep violet dye lot, matched across the run so panels sit flush edge to edge.' },
 
-  { name:'ECLIPSE / RED', base:'#8d1a22', ink:'#f3ece8', inkOpacity:.70,
+  { name:'TRENCH / CRIMSON', base:'#8d1a22', ink:'#f3ece8', inkOpacity:.70,
     sunFill:'#f7f4ef', sunR:66, sunX:534, sunY:284, seed:5.6,
     waveCount:15, waveAmp:21, y0:.45, y1:.97,
-    size:'900 × 400 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'SLIMFLEX®',
+    size:'900 × 400 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'DEEPGRIP',
     desc:'Oxide red with a matte finish that keeps glare off the desk under direct light.' },
 
-  { name:'PRISM', grad:['#7ad3ff','#b9a6ff','#ffb1d8','#ffd9a0'], ink:'#101018', inkOpacity:.58,
+  { name:'SPECTRA', grad:['#7ad3ff','#b9a6ff','#ffb1d8','#ffd9a0'], ink:'#101018', inkOpacity:.58,
     sunFill:'#ffffff', sunR:72, sunX:580, sunY:264, seed:6.9,
     waveCount:19, waveAmp:17, y0:.38, y1:.97,
-    size:'490 × 420 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'SLIMFLEX®',
+    size:'490 × 420 MM', thick:'4 MM', surface:'CONTROL CLOTH', basem:'DEEPGRIP',
     desc:'Iridescent print that shifts hue with viewing angle, sealed under the weave.' },
 ];
 
@@ -349,6 +362,14 @@ function render(i, animate) {
   setArt($('padRight'), padSVG(right), animate);
 
   $('title').textContent = p.name;
+
+  // 标题自适应：默认 64px，名字过长时按比例缩到刚好填满信息栏，避免溢出
+  const t = $('title');
+  t.style.fontSize = '64px';
+  if (t.scrollWidth > t.parentElement.clientWidth) {
+    t.style.fontSize = (64 * t.parentElement.clientWidth / t.scrollWidth).toFixed(2) + 'px';
+  }
+
   $('desc').textContent  = p.desc;
 
   $('specs').innerHTML = [['size','SIZE',p.size],['thick','THICKNESS',p.thick],
